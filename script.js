@@ -15,7 +15,11 @@ function fight() {
     playerHp = playerHp - damageMonster;
 
     if (ennemiActuel.hp <= 0) {
-        document.getElementById("story").innerHTML = "Tu as vaincu le monstre !";
+        ennemis.shift(); // On enlève le monstre de la liste
+        if (ennemis.length > 0) {
+        document.getElementById("story").innerHTML = `Tu as vaincu le monstre ! Un ${ennemiActuel.name} est apparu !`;
+    }
+
     } else if (playerHp <= 0) {
         document.getElementById("story").innerHTML = "Tu es mort !";
     } else {
