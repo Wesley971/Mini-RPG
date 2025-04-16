@@ -8,6 +8,7 @@ let ennemis = [
 let ennemiActuel = ennemis[0]; // Le gobelin
 
 function fight() {
+
   let damagePlayer = Math.floor(Math.random() * 3) + 1; // entre 1 et 3
   ennemiActuel.hp = ennemiActuel.hp - damagePlayer;
 
@@ -21,7 +22,12 @@ function fight() {
     if (ennemis.length > 0) {
       ennemiActuel = ennemis[0]; // On passe au monstre suivant
 
-      document.getElementById("story").innerHTML = `Tu as vaincu le monstre ! Un ${ennemiActuel.name}`;
+      document.getElementById(
+        "story"
+      ).innerHTML = `Tu as vaincu le monstre ! Un ${ennemiActuel.name}`;
+    } else {
+      document.getElementById("story").innerHTML =
+        "Tu as vaincu tous les monstres ! Tu es le héros de cette histoire !";
     }
   } else {
     document.getElementById("story").innerHTML =
@@ -30,6 +36,7 @@ function fight() {
   }
 }
 function heal() {
+
   let heal = Math.floor(Math.random() * 5) + 2;
   playerHp += heal;
 
