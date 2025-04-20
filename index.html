@@ -3,19 +3,41 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mini RPG - GitHub</title>
+  <title>Mini RPG</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>🧙‍♂️ Bienvenue dans ton mini RPG !</h1>
+  <h1>⚔️ Mini RPG - L’odyssée du Héros</h1>
 
   <div id="game">
-    <p id="story">Tu te réveilles dans une forêt étrange... Que veux-tu faire ?</p>
+    <!-- Zone du héros -->
+    <div id="player" class="character">
+      <h2>🛡️ Héros</h2>
+      <div class="health-bar">
+        <div id="player-hp-bar" class="bar"></div>
+      </div>
+      <p id="player-hp-text">HP: 20</p>
+    </div>
 
+    <!-- Zone de l’ennemi -->
+    <div id="enemy" class="character">
+      <h2>👹 <span id="enemy-name">Gobelin</span></h2>
+      <div class="health-bar">
+        <div id="enemy-hp-bar" class="bar"></div>
+      </div>
+      <p id="enemy-hp-text">HP: 10</p>
+    </div>
+
+    <!-- Boutons d’action -->
     <div id="choices">
-      <button onclick="fight()">⚔ Combattre</button><button onclick="heal()">💖 Se soigner</button>
-
+      <button onclick="fight()">⚔ Attaquer</button>
+      <button onclick="heal()">🧪 Se soigner</button>
       <button onclick="run()">🏃 Fuir</button>
+    </div>
+
+    <!-- Texte narratif -->
+    <div id="story">
+      Une brume épaisse recouvre la forêt... un bruit de pas approche.
     </div>
   </div>
 
