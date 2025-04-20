@@ -8,35 +8,47 @@ let ennemis = [
 let ennemiActuel = ennemis[0]; // Le gobelin
 
 function fight() {
-
   let damagePlayer = Math.floor(Math.random() * 3) + 1; // entre 1 et 3
-  ennemiActuel.hp = ennemiActuel.hp - damagePlayer;
+  ennemiActuel.hp -= damagePlayer;
 
-  let damageMonster = Math.floor(Math.random() * 4); // entre 0 et 3
-  playerHp = playerHp - damageMonster;
+  // Affichage initial de l’attaque du joueur
+  document.getElementById("story").innerHTML =
+    `Tu attaques le ${ennemiActuel.name} ! Tu lui fais ${damagePlayer} dégâts ! Il lui reste ${ennemiActuel.hp} HP. <br>`;
 
-  if (playerHp <= 0) {
-    document.getElementById("story").innerHTML = `Tu es mort ! Tu as été vaincu par le ${ennemiActuel.name}.`;
-  } else if (ennemiActuel.hp <= 0) {
-    ennemis.shift(); // On enlève le monstre de la liste
+  // Si le monstre est mort
+  if (ennemiActuel.hp <= 0) {
+    ennemis.shift(); // on l’enlève
+
     if (ennemis.length > 0) {
-      ennemiActuel = ennemis[0]; // On passe au monstre suivant
-
-      document.getElementById(
-        "story"
-      ).innerHTML = `Tu as vaincu le monstre ! Un ${ennemiActuel.name}`;
+      ennemiActuel = ennemis[0];
+      document.getElementById("story").innerHTML += 
+        `Tu as vaincu le monstre ! Un ${ennemiActuel.name} approche...`;
     } else {
-      document.getElementById("story").innerHTML =
-        "Tu as vaincu tous les monstres ! Tu es le héros de cette histoire !";
+      document.getElementById("story").innerHTML += 
+        "🎉 Tu as vaincu tous les monstres ! Victoire !";
     }
-  } else {
-    document.getElementById("story").innerHTML =
-      `Tu attaques le ${ennemiActuel.name} ! Tu lui fais ${damagePlayer} dégâts ! Il lui reste ${ennemiActuel.hp} HP. <br>` +
-      `Le ${ennemiActuel.name} t'attaque ! Il te fait ${damageMonster} dégâts ! Il te reste ${playerHp} HP.`;
-  }
-}
-function heal() {
 
+    return; // stop ici
+  }
+
+  // Sinon, riposte de l’ennemi après 1 seconde
+  setTimeout(() => {
+    let damageMonster = Math.floor(Math.random() * 4); // entre 0 et 3
+    playerHp -= damageMonster;
+
+    if (playerHp <= 0) {
+      document.getElementById("story").innerHTML += 
+        `Le ${ennemiActuel.name} t'attaque et te fait ${damageMonster} dégâts !<br>` +
+        `💀 Tu es mort !`;
+    } else {
+      document.getElementById("story").innerHTML += 
+        `Le ${ennemiActuel.name} t'attaque ! Il te fait ${damageMonster} dégâts ! Il te reste ${playerHp} HP.`;
+    }
+  }, 1500);
+}
+
+// Fonction de soin (pas modifiée, elle est déjà bonne 👍)
+function heal() {
   let heal = Math.floor(Math.random() * 5) + 2;
   playerHp += heal;
 
@@ -44,7 +56,6 @@ function heal() {
     playerHp = 20;
   }
 
-  document.getElementById(
-    "story"
-  ).innerHTML = `💖 Tu récupères ${heal} HP. Tu as maintenant ${playerHp} HP.`;
+  document.getElementById("story").innerHTML = 
+    `💖 Tu récupères ${heal} HP. Tu as maintenant ${playerHp} HP.`;
 }
