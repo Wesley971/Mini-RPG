@@ -1,10 +1,10 @@
 let playerHp = 20;
 let playerMaxHp = 20;
 let ennemis = [
-  { name: "Gobelin", hp: 10, maxHp: 10 },
-  { name: "Squelette", hp: 15, maxHp: 15 },
-  { name: "Ogre", hp: 20, maxHp: 20 },
-  { name: "Dragon", hp: 30, maxHp: 30 },
+  { name: "Gobelin", hp: 10, maxHp: 10, image: "images/gobelin.png" },
+  { name: "Squelette", hp: 15, maxHp: 15, image: "images/squelette.png" },
+  { name: "Ogre", hp: 20, maxHp: 20, image: "images/ogre.png" },
+  { name: "Dragon", hp: 30, maxHp: 30, image: "images/dragon.png" },
 ];
 let ennemiActuel = ennemis[0];
 
@@ -27,6 +27,7 @@ function fight() {
     if (ennemis.length > 0) {
       ennemiActuel = ennemis[0];
       document.getElementById("enemy-name").innerText = ennemiActuel.name;
+      document.getElementById("enemy-image").src = ennemiActuel.image;
       document.getElementById("enemy-hp-text").innerText = `HP : ${ennemiActuel.hp}`;
       document.getElementById("enemy-hp-bar").style.width = (ennemiActuel.hp / ennemiActuel.maxHp) * 100 + "%";
       document.getElementById("story").innerHTML += `Tu as vaincu le monstre ! Un ${ennemiActuel.name} approche...`;
@@ -41,7 +42,8 @@ function fight() {
   setTimeout(() => {
     let damageMonster = Math.floor(Math.random() * 4);
     playerHp -= damageMonster;
-    if (playerHp < 0) playerHp = 0;
+    if (playerHp < 0) 
+      playerHp = 0;
 
     // MAJ barre et texte du joueur
     let pourcentagePlayer = (playerHp / playerMaxHp) * 100;
@@ -55,7 +57,7 @@ function fight() {
       document.getElementById("story").innerHTML += 
         `Le ${ennemiActuel.name} t'attaque ! Il te fait ${damageMonster} dégâts ! Il te reste ${playerHp} HP.`;
     }
-  }, 1500);
+  }, 800);
 }
 
 function heal() {

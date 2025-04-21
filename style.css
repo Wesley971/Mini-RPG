@@ -9,7 +9,6 @@ body {
 
 h1 {
   font-size: 2em;
-  color: #ffd700;
   text-shadow: 0 0 5px #d4af37;
 }
 
@@ -81,4 +80,16 @@ button:hover {
   font-size: 16px;
   min-height: 70px;
   border: 1px solid #444;
+}
+.emoji-hero {
+  width: 64px;
+  height: 64px;
+  vertical-align: middle;
+  border-radius: 12px;
+}
+.emoji-enemy {
+  width: 64px;
+  height: 64px;
+  vertical-align: middle;
+  border-radius: 8px;
 }
