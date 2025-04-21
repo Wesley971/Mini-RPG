@@ -3,12 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mini RPG</title>
+  <title>L’Ordre Déchu</title>
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
-  <h1>⚔️ Mini RPG - L’odyssée du Héros</h1>
+<body class="lock-scroll">
+  <!-- Écran d’intro -->
+  <div id="intro-screen">
+    <h1>🩸 L’Ordre Déchu</h1>
+    <p class="subtitle">Une aventure de Maelor du Val Ténébreux</p>
+    <button onclick="startGame()">🎬 Commencer l’aventure</button>
+  </div>
 
+  <!-- Contenu principal du jeu -->
   <div id="game">
     <!-- Zone du héros -->
     <div id="player" class="character">
@@ -21,7 +27,7 @@
 
     <!-- Zone de l’ennemi -->
     <div id="enemy" class="character">
-      <h2>  <img id="enemy-image" src="images/gobelin.png" alt="Ennemi" class="emoji-enemy">
+      <h2><img id="enemy-image" src="images/gobelin.png" alt="Ennemi" class="emoji-enemy">
          <span id="enemy-name">Gobelin</span></h2>
       <div class="health-bar">
         <div id="enemy-hp-bar" class="bar"></div>
@@ -39,6 +45,11 @@
     <!-- Texte narratif -->
     <div id="story">
       Une brume épaisse recouvre la forêt... un bruit de pas approche.
+    </div>
+
+    <!-- Bouton "Continuer" -->
+    <div id="continue-button">
+      <button onclick="launchGameplay()">➡️ Continuer</button>
     </div>
   </div>
 
