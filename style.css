@@ -1,15 +1,19 @@
 /* --- Général --- */
 body {
-  font-family: 'Georgia', serif;
+  font-family: 'Cinzel', Georgia, serif;
   background-image: url("images/fond-rpg.png");
   background-size: cover;
   background-attachment: fixed;
   background-position: center center;
   background-repeat: no-repeat;
   color: #f0f0f0;
-  text-align: center;
-  padding: 30px;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* prend toute la hauteur de l’écran */
 }
+
 #choices {
   display: none;
 }
@@ -27,8 +31,8 @@ h1 {
   padding: 25px;
   border-radius: 15px;
   border: 2px solid #444;
-  max-width: 600px;
-  margin: auto;
+  width: 90%;
+  max-width: 700px; /* un peu plus large */
   box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
   display: flex;
   flex-direction: column;
@@ -57,7 +61,7 @@ h2 {
 }
 
 .bar {
-  background-color: #4caf50;
+  background-color: #8b1e1e; /* sang séché */
   height: 100%;
   width: 100%;
   transition: width 0.3s ease;
@@ -72,32 +76,38 @@ button {
   margin: 10px;
   padding: 12px 24px;
   font-size: 16px;
-  background: linear-gradient(#8f5dff, #6b47dc);
-  border: 2px solid #c8a2c8;
+  background: linear-gradient(#6a5740, #433829); /* cuir/métal vieilli */
+  border: 2px solid #a08b67;
   border-radius: 10px;
-  color: white;
+  color: #f5f5dc;
   cursor: pointer;
   transition: all 0.2s ease;
-  box-shadow: 0 0 10px rgba(200, 162, 200, 0.3);
+  box-shadow: 0 0 10px rgba(160, 139, 103, 0.2);
 }
 
 button:hover {
   transform: scale(1.05);
-  background: linear-gradient(#a87fff, #7a5ded);
+  background: linear-gradient(#7d6651, #54483a);
+}
+button:active {
+  transform: scale(0.95);
+  background: linear-gradient(#5a4c3c, #3a2e24);
 }
 
 
 /* --- Zone du texte de narration --- */
 #story {
   margin-top: 25px;
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: rgba(33, 20, 9, 0.8); /* parchemin foncé */
+  border: 1px solid #5a4c3c;
   padding: 20px;
   border-radius: 10px;
   font-size: 18px;
   min-height: 70px;
-  border: 1px solid #666;
   line-height: 1.8;
+  transition: all 0.5s ease-in-out;
 }
+
 
 .emoji-hero {
   width: 64px;
@@ -185,4 +195,45 @@ body.game-started #choices {
 
 #continue-button button:hover {
   background-color: #666;
+}
+/* Secousse quand le joueur prend un coup */
+.hit {
+  animation: shake 0.4s;
+  background-color: #3b0f0f !important; /* rouge très sombre, effet choc */
+}
+
+/* Animation de secousse */
+@keyframes shake {
+  0% { transform: translate(0px, 0px); }
+  25% { transform: translate(-5px, 0px); }
+  50% { transform: translate(5px, 0px); }
+  75% { transform: translate(-5px, 0px); }
+  100% { transform: translate(0px, 0px); }
+}
+.emoji-hero,
+.emoji-enemy {
+  animation: float 2s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+.emoji-hero,
+.emoji-enemy {
+  filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.2));
+}
+.replay-btn {
+  margin-top: 15px;
+  padding: 12px 24px;
+  font-size: 16px;
+  background: linear-gradient(#444, #222);
+  border: 2px solid #888;
+  border-radius: 8px;
+  color: #f0f0f0;
+  cursor: pointer;
+}
+
+.replay-btn:hover {
+  background: linear-gradient(#666, #333);
 }

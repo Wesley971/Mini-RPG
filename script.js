@@ -40,12 +40,16 @@ function launchGameplay() {
 function fight() {
   let damagePlayer = Math.floor(Math.random() * 3) + 1;
   ennemiActuel.hp -= damagePlayer;
+  document.getElementById("enemy").classList.add("hit");
+setTimeout(() => {
+  document.getElementById("enemy").classList.remove("hit");
+}, 400);
   if (ennemiActuel.hp < 0) ennemiActuel.hp = 0;
 
   let pourcentageEnnemi = (ennemiActuel.hp / ennemiActuel.maxHp) * 100;
   document.getElementById("enemy-hp-text").innerText = `HP : ${ennemiActuel.hp}`;
   document.getElementById("enemy-hp-bar").style.width = pourcentageEnnemi + "%";
-
+    
   document.getElementById("story").innerHTML =
     `Tu attaques le ${ennemiActuel.name} ! Tu lui fais ${damagePlayer} dégâts ! Il lui reste ${ennemiActuel.hp} HP. <br>`;
 
@@ -73,6 +77,12 @@ function fight() {
   setTimeout(() => {
     let damageMonster = Math.floor(Math.random() * 4);
     playerHp -= damageMonster;
+    document.getElementById("player").classList.add("hit");
+
+setTimeout(() => {
+  document.getElementById("player").classList.remove("hit");
+}, 400);
+
     if (playerHp < 0) playerHp = 0;
 
     let pourcentagePlayer = (playerHp / playerMaxHp) * 100;
@@ -93,6 +103,7 @@ function fight() {
 function heal() {
   let heal = Math.floor(Math.random() * 5) + 2;
   playerHp += heal;
+  
   if (playerHp > playerMaxHp) playerHp = playerMaxHp;
 
   let pourcentagePlayer = (playerHp / playerMaxHp) * 100;
@@ -104,6 +115,12 @@ function heal() {
     setTimeout(()=> {
       let damageMonster = Math.floor(Math.random() * 4);
     playerHp -= damageMonster;
+    document.getElementById("player").classList.add("hit");
+
+setTimeout(() => {
+  document.getElementById("player").classList.remove("hit");
+}, 400);
+
     if (playerHp < 0) playerHp = 0;
 
     pourcentagePlayer = (playerHp / playerMaxHp) * 100;
@@ -119,3 +136,48 @@ function heal() {
     }
     },800)
 }
+ function run() {
+  let runChance = Math.random();
+  if (runChance < 0.5) {
+    document.getElementById("story").innerHTML =
+    "Maelor a fui. Mais l’Ordre Déchu l’attend toujours… Souhaites-tu affronter à nouveau ton destin ?";
+
+  const replayButton = document.createElement("button");
+  replayButton.textContent = "🔁 Rejouer";
+  replayButton.onclick = () => window.location.reload();
+  replayButton.classList.add("replay-btn"); // pour le styliser plus tard
+
+  if (!document.querySelector(".replay-btn")) {
+    document.getElementById("choices").appendChild(replayButton);
+  }
+  
+  }
+  else {
+    document.getElementById("story").innerHTML = "Tu n'as pas réussi à fuir le combat !";
+    setTimeout(()=> {
+    let damageMonster = Math.floor(Math.random() * 4);
+  playerHp -= damageMonster;
+  document.getElementById("player").classList.add("hit");
+
+setTimeout(() => {
+  document.getElementById("player").classList.remove("hit");
+}, 400);
+
+  if (playerHp < 0) playerHp = 0;
+
+  pourcentagePlayer = (playerHp / playerMaxHp) * 100;
+  document.getElementById("player-hp-bar").style.width = pourcentagePlayer + "%";
+  document.getElementById("player-hp-text").innerText = `HP: ${playerHp}`;
+
+  if (playerHp <= 0) {
+    document.getElementById("story").innerHTML +=
+      `Le ${ennemiActuel.name} t'attaque et te fait ${damageMonster} dégâts !<br>💀 Tu es mort !`;
+  } else {
+    document.getElementById("story").innerHTML +=
+      `Le ${ennemiActuel.name} t'attaque ! Il te fait ${damageMonster} dégâts ! Il te reste ${playerHp} HP.`;
+  }
+  },800)
+  }
+  
+
+ }
