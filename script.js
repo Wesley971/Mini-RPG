@@ -101,4 +101,21 @@ function heal() {
 
   document.getElementById("story").innerHTML =
     `💖 Tu récupères ${heal} HP. Tu as maintenant ${playerHp} HP.`;
+    setTimeout(()=> {
+      let damageMonster = Math.floor(Math.random() * 4);
+    playerHp -= damageMonster;
+    if (playerHp < 0) playerHp = 0;
+
+    pourcentagePlayer = (playerHp / playerMaxHp) * 100;
+    document.getElementById("player-hp-bar").style.width = pourcentagePlayer + "%";
+    document.getElementById("player-hp-text").innerText = `HP: ${playerHp}`;
+
+    if (playerHp <= 0) {
+      document.getElementById("story").innerHTML +=
+        `Le ${ennemiActuel.name} t'attaque et te fait ${damageMonster} dégâts !<br>💀 Tu es mort !`;
+    } else {
+      document.getElementById("story").innerHTML +=
+        `Le ${ennemiActuel.name} t'attaque ! Il te fait ${damageMonster} dégâts ! Il te reste ${playerHp} HP.`;
+    }
+    },800)
 }
