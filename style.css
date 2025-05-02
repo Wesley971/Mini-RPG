@@ -237,3 +237,8 @@ body.game-started #choices {
 .replay-btn:hover {
   background: linear-gradient(#666, #333);
 }
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  filter: grayscale(70%);
+}

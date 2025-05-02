@@ -144,6 +144,10 @@ setTimeout(() => {
 
   const replayButton = document.createElement("button");
   replayButton.textContent = "🔁 Rejouer";
+  document.querySelectorAll("#choices button").forEach(btn => {
+    btn.disabled = true;
+  });
+  
   replayButton.onclick = () => window.location.reload();
   replayButton.classList.add("replay-btn"); // pour le styliser plus tard
 
