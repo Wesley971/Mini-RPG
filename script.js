@@ -10,7 +10,20 @@ let ennemis = [
 
 let ennemiActuel = ennemis[0];
 
-// ----------- INTRO ----------
+function finDePartie() {
+  document.querySelectorAll("#choices button").forEach(btn => {
+    btn.disabled = true;
+  });
+
+  if (!document.querySelector(".replay-btn")) {
+    const replayButton = document.createElement("button");
+    replayButton.textContent = "🔁 Rejouer";
+    replayButton.classList.add("replay-btn");
+    replayButton.onclick = () => window.location.reload();
+    document.getElementById("choices").appendChild(replayButton);
+  }
+}
+
 function startGame() {
   document.getElementById("intro-screen").style.display = "none";
   document.getElementById("game").style.display = "block";
@@ -25,31 +38,29 @@ function startGame() {
   document.getElementById("continue-button").style.display = "block";
 }
 
-// ----------- LANCEMENT DU COMBAT ----------
 function launchGameplay() {
   document.getElementById("continue-button").style.display = "none";
-
-  // Affiche tous les éléments du jeu via classe
   document.body.classList.add("game-started");
-
   document.getElementById("story").innerHTML =
     "Une créature surgit de l’ombre... prépare-toi à combattre !";
 }
 
-// ----------- COMBAT ----------
 function fight() {
+  if (playerHp <= 0 || ennemis.length === 0) return;
+
   let damagePlayer = Math.floor(Math.random() * 3) + 1;
   ennemiActuel.hp -= damagePlayer;
   document.getElementById("enemy").classList.add("hit");
-setTimeout(() => {
-  document.getElementById("enemy").classList.remove("hit");
-}, 400);
+  setTimeout(() => {
+    document.getElementById("enemy").classList.remove("hit");
+  }, 400);
+
   if (ennemiActuel.hp < 0) ennemiActuel.hp = 0;
 
   let pourcentageEnnemi = (ennemiActuel.hp / ennemiActuel.maxHp) * 100;
   document.getElementById("enemy-hp-text").innerText = `HP : ${ennemiActuel.hp}`;
   document.getElementById("enemy-hp-bar").style.width = pourcentageEnnemi + "%";
-    
+
   document.getElementById("story").innerHTML =
     `Tu attaques le ${ennemiActuel.name} ! Tu lui fais ${damagePlayer} dégâts ! Il lui reste ${ennemiActuel.hp} HP. <br>`;
 
@@ -63,12 +74,12 @@ setTimeout(() => {
       document.getElementById("enemy-hp-text").innerText = `HP : ${ennemiActuel.hp}`;
       document.getElementById("enemy-hp-bar").style.width =
         (ennemiActuel.hp / ennemiActuel.maxHp) * 100 + "%";
-
       document.getElementById("story").innerHTML +=
         `Tu as vaincu le monstre ! Un ${ennemiActuel.name} approche...`;
     } else {
       document.getElementById("story").innerHTML +=
         "<br><br>🎉 Tu as vaincu tous les monstres ! Victoire !";
+      finDePartie();
     }
 
     return;
@@ -78,10 +89,9 @@ setTimeout(() => {
     let damageMonster = Math.floor(Math.random() * 4);
     playerHp -= damageMonster;
     document.getElementById("player").classList.add("hit");
-
-setTimeout(() => {
-  document.getElementById("player").classList.remove("hit");
-}, 400);
+    setTimeout(() => {
+      document.getElementById("player").classList.remove("hit");
+    }, 400);
 
     if (playerHp < 0) playerHp = 0;
 
@@ -92,6 +102,7 @@ setTimeout(() => {
     if (playerHp <= 0) {
       document.getElementById("story").innerHTML +=
         `Le ${ennemiActuel.name} t'attaque et te fait ${damageMonster} dégâts !<br>💀 Tu es mort !`;
+      finDePartie();
     } else {
       document.getElementById("story").innerHTML +=
         `Le ${ennemiActuel.name} t'attaque ! Il te fait ${damageMonster} dégâts ! Il te reste ${playerHp} HP.`;
@@ -99,11 +110,12 @@ setTimeout(() => {
   }, 800);
 }
 
-// ----------- SOIN ----------
 function heal() {
+  if (playerHp <= 0 || ennemis.length === 0) return;
+
   let heal = Math.floor(Math.random() * 5) + 2;
   playerHp += heal;
-  
+
   if (playerHp > playerMaxHp) playerHp = playerMaxHp;
 
   let pourcentagePlayer = (playerHp / playerMaxHp) * 100;
@@ -112,76 +124,65 @@ function heal() {
 
   document.getElementById("story").innerHTML =
     `💖 Tu récupères ${heal} HP. Tu as maintenant ${playerHp} HP.`;
-    setTimeout(()=> {
-      let damageMonster = Math.floor(Math.random() * 4);
+
+  setTimeout(() => {
+    let damageMonster = Math.floor(Math.random() * 4);
     playerHp -= damageMonster;
     document.getElementById("player").classList.add("hit");
-
-setTimeout(() => {
-  document.getElementById("player").classList.remove("hit");
-}, 400);
+    setTimeout(() => {
+      document.getElementById("player").classList.remove("hit");
+    }, 400);
 
     if (playerHp < 0) playerHp = 0;
 
-    pourcentagePlayer = (playerHp / playerMaxHp) * 100;
+    let pourcentagePlayer = (playerHp / playerMaxHp) * 100;
     document.getElementById("player-hp-bar").style.width = pourcentagePlayer + "%";
     document.getElementById("player-hp-text").innerText = `HP: ${playerHp}`;
 
     if (playerHp <= 0) {
       document.getElementById("story").innerHTML +=
         `Le ${ennemiActuel.name} t'attaque et te fait ${damageMonster} dégâts !<br>💀 Tu es mort !`;
+      finDePartie();
     } else {
       document.getElementById("story").innerHTML +=
         `Le ${ennemiActuel.name} t'attaque ! Il te fait ${damageMonster} dégâts ! Il te reste ${playerHp} HP.`;
     }
-    },800)
+  }, 800);
 }
- function run() {
+
+function run() {
+  if (playerHp <= 0 || ennemis.length === 0) return;
+
   let runChance = Math.random();
   if (runChance < 0.5) {
     document.getElementById("story").innerHTML =
-    "Maelor a fui. Mais l’Ordre Déchu l’attend toujours… Souhaites-tu affronter à nouveau ton destin ?";
-
-  const replayButton = document.createElement("button");
-  replayButton.textContent = "🔁 Rejouer";
-  document.querySelectorAll("#choices button").forEach(btn => {
-    btn.disabled = true;
-  });
-  
-  replayButton.onclick = () => window.location.reload();
-  replayButton.classList.add("replay-btn"); // pour le styliser plus tard
-
-  if (!document.querySelector(".replay-btn")) {
-    document.getElementById("choices").appendChild(replayButton);
-  }
-  
-  }
-  else {
-    document.getElementById("story").innerHTML = "Tu n'as pas réussi à fuir le combat !";
-    setTimeout(()=> {
-    let damageMonster = Math.floor(Math.random() * 4);
-  playerHp -= damageMonster;
-  document.getElementById("player").classList.add("hit");
-
-setTimeout(() => {
-  document.getElementById("player").classList.remove("hit");
-}, 400);
-
-  if (playerHp < 0) playerHp = 0;
-
-  pourcentagePlayer = (playerHp / playerMaxHp) * 100;
-  document.getElementById("player-hp-bar").style.width = pourcentagePlayer + "%";
-  document.getElementById("player-hp-text").innerText = `HP: ${playerHp}`;
-
-  if (playerHp <= 0) {
-    document.getElementById("story").innerHTML +=
-      `Le ${ennemiActuel.name} t'attaque et te fait ${damageMonster} dégâts !<br>💀 Tu es mort !`;
+      "Maelor a fui. Mais l’Ordre Déchu l’attend toujours… Souhaites-tu affronter à nouveau ton destin ?";
+    finDePartie();
   } else {
-    document.getElementById("story").innerHTML +=
-      `Le ${ennemiActuel.name} t'attaque ! Il te fait ${damageMonster} dégâts ! Il te reste ${playerHp} HP.`;
-  }
-  },800)
-  }
-  
+    document.getElementById("story").innerHTML = "Tu n'as pas réussi à fuir le combat !";
 
- }
+    setTimeout(() => {
+      let damageMonster = Math.floor(Math.random() * 4);
+      playerHp -= damageMonster;
+      document.getElementById("player").classList.add("hit");
+      setTimeout(() => {
+        document.getElementById("player").classList.remove("hit");
+      }, 400);
+
+      if (playerHp < 0) playerHp = 0;
+
+      let pourcentagePlayer = (playerHp / playerMaxHp) * 100;
+      document.getElementById("player-hp-bar").style.width = pourcentagePlayer + "%";
+      document.getElementById("player-hp-text").innerText = `HP: ${playerHp}`;
+
+      if (playerHp <= 0) {
+        document.getElementById("story").innerHTML +=
+          `Le ${ennemiActuel.name} t'attaque et te fait ${damageMonster} dégâts !<br>💀 Tu es mort !`;
+        finDePartie();
+      } else {
+        document.getElementById("story").innerHTML +=
+          `Le ${ennemiActuel.name} t'attaque ! Il te fait ${damageMonster} dégâts ! Il te reste ${playerHp} HP.`;
+      }
+    }, 800);
+  }
+}
