@@ -1,5 +1,7 @@
 let playerHp = 20;
 let playerMaxHp = 20;
+let playerXp = 0;
+let playerLevel = 1;
 
 let ennemis = [
   { name: "Gobelin", hp: 10, maxHp: 10, image: "images/gobelin.png" },
@@ -66,7 +68,15 @@ function fight() {
 
   if (ennemiActuel.hp <= 0) {
     ennemis.shift();
+    playerXp += 5;
+    if (playerXp >= 10){
+      playerLevel = 2 ; 
+      document.getElementById("story").innerHTML += `<br>🆙 Tu montes au niveau ${playerLevel} !`;
+    }
+    document.getElementById("player-xp-text").innerText = `XP : ${playerXp}`;
+    document.getElementById("player-level-text").innerText = `Niveau : ${playerLevel}`;
 
+   
     if (ennemis.length > 0) {
       ennemiActuel = ennemis[0];
       document.getElementById("enemy-name").innerText = ennemiActuel.name;
