@@ -1,14 +1,8 @@
-let playerHp = 20;
-let playerMaxHp = 20;
-let playerXp = 0;
-let playerLevel = 1;
-
-let ennemis = [
-  { name: "Gobelin", hp: 10, maxHp: 10, image: "images/gobelin.png" },
-  { name: "Squelette", hp: 15, maxHp: 15, image: "images/squelette.png" },
-  { name: "Ogre", hp: 20, maxHp: 20, image: "images/ogre.png" },
-  { name: "Dragon", hp: 30, maxHp: 30, image: "images/dragon.png" },
-];
+let player = {
+  hp: 20,
+  maxHp: 20,
+  xp: 0,
+  level: 1,}
 
 let ennemiActuel = ennemis[0];
 
@@ -48,7 +42,7 @@ function launchGameplay() {
 }
 
 function fight() {
-  if (playerHp <= 0 || ennemis.length === 0) return;
+  if (player.hp <= 0 || ennemis.length === 0) return;
 
   let damagePlayer = Math.floor(Math.random() * 3) + 1;
   ennemiActuel.hp -= damagePlayer;
@@ -68,13 +62,13 @@ function fight() {
 
   if (ennemiActuel.hp <= 0) {
     ennemis.shift();
-    playerXp += 5;
-    if (playerXp >= 10){
-      playerLevel = 2 ; 
-      document.getElementById("story").innerHTML += `<br>🆙 Tu montes au niveau ${playerLevel} !`;
+    player.xp += 5;
+    if (player.xp >= 10){
+      player.level = 2 ; 
+      document.getElementById("story").innerHTML += `<br>🆙 Tu montes au niveau ${player.level} !`;
     }
-    document.getElementById("player-xp-text").innerText = `XP : ${playerXp}`;
-    document.getElementById("player-level-text").innerText = `Niveau : ${playerLevel}`;
+    document.getElementById("player-xp-text").innerText = `XP : ${player.xp}`;
+    document.getElementById("player-level-text").innerText = `Niveau : ${player.level}`;
 
    
     if (ennemis.length > 0) {
@@ -97,71 +91,71 @@ function fight() {
 
   setTimeout(() => {
     let damageMonster = Math.floor(Math.random() * 4);
-    playerHp -= damageMonster;
+    player.hp -= damageMonster;
     document.getElementById("player").classList.add("hit");
     setTimeout(() => {
       document.getElementById("player").classList.remove("hit");
     }, 400);
 
-    if (playerHp < 0) playerHp = 0;
+    if (player.hp < 0) player.hp = 0;
 
-    let pourcentagePlayer = (playerHp / playerMaxHp) * 100;
+    let pourcentagePlayer = (player.hp / player.maxHp) * 100;
     document.getElementById("player-hp-bar").style.width = pourcentagePlayer + "%";
-    document.getElementById("player-hp-text").innerText = `HP: ${playerHp}`;
+    document.getElementById("player-hp-text").innerText = `HP: ${player.hp}`;
 
-    if (playerHp <= 0) {
+    if (player.hp <= 0) {
       document.getElementById("story").innerHTML +=
         `Le ${ennemiActuel.name} t'attaque et te fait ${damageMonster} dégâts !<br>💀 Tu es mort !`;
       finDePartie();
     } else {
       document.getElementById("story").innerHTML +=
-        `Le ${ennemiActuel.name} t'attaque ! Il te fait ${damageMonster} dégâts ! Il te reste ${playerHp} HP.`;
+        `Le ${ennemiActuel.name} t'attaque ! Il te fait ${damageMonster} dégâts ! Il te reste ${player.hp} HP.`;
     }
   }, 800);
 }
 
 function heal() {
-  if (playerHp <= 0 || ennemis.length === 0) return;
+  if (player.hp <= 0 || ennemis.length === 0) return;
 
   let heal = Math.floor(Math.random() * 5) + 2;
-  playerHp += heal;
+  player.hp += heal;
 
-  if (playerHp > playerMaxHp) playerHp = playerMaxHp;
+  if (player.hp > player.maxHp) player.hp = player.maxHp;
 
-  let pourcentagePlayer = (playerHp / playerMaxHp) * 100;
+  let pourcentagePlayer = (player.hp / player.maxHp) * 100;
   document.getElementById("player-hp-bar").style.width = pourcentagePlayer + "%";
-  document.getElementById("player-hp-text").innerText = `HP: ${playerHp}`;
+  document.getElementById("player-hp-text").innerText = `HP: ${player.hp}`;
 
   document.getElementById("story").innerHTML =
-    `💖 Tu récupères ${heal} HP. Tu as maintenant ${playerHp} HP.`;
+    `💖 Tu récupères ${heal} HP. Tu as maintenant ${player.hp} HP.`;
 
   setTimeout(() => {
     let damageMonster = Math.floor(Math.random() * 4);
-    playerHp -= damageMonster;
+    player.hp -= damageMonster;
     document.getElementById("player").classList.add("hit");
     setTimeout(() => {
       document.getElementById("player").classList.remove("hit");
     }, 400);
 
-    if (playerHp < 0) playerHp = 0;
+    if (player.hp < 0) player.hp = 0;
 
-    let pourcentagePlayer = (playerHp / playerMaxHp) * 100;
+    let pourcentagePlayer = (player.hp / player.maxHp) * 100;
     document.getElementById("player-hp-bar").style.width = pourcentagePlayer + "%";
-    document.getElementById("player-hp-text").innerText = `HP: ${playerHp}`;
+    document.getElementById("player-hp-text").innerText = `HP: ${player.hp}`;
 
-    if (playerHp <= 0) {
+    if (player.hp <= 0) {
       document.getElementById("story").innerHTML +=
         `Le ${ennemiActuel.name} t'attaque et te fait ${damageMonster} dégâts !<br>💀 Tu es mort !`;
       finDePartie();
     } else {
       document.getElementById("story").innerHTML +=
-        `Le ${ennemiActuel.name} t'attaque ! Il te fait ${damageMonster} dégâts ! Il te reste ${playerHp} HP.`;
+        `Le ${ennemiActuel.name} t'attaque ! Il te fait ${damageMonster} dégâts ! Il te reste ${player.hp} HP.`;
     }
   }, 800);
 }
 
 function run() {
-  if (playerHp <= 0 || ennemis.length === 0) return;
+  if (player.hp <= 0 || ennemis.length === 0) return;
 
   let runChance = Math.random();
   if (runChance < 0.5) {
@@ -173,25 +167,25 @@ function run() {
 
     setTimeout(() => {
       let damageMonster = Math.floor(Math.random() * 4);
-      playerHp -= damageMonster;
+      player.hp -= damageMonster;
       document.getElementById("player").classList.add("hit");
       setTimeout(() => {
         document.getElementById("player").classList.remove("hit");
       }, 400);
 
-      if (playerHp < 0) playerHp = 0;
+      if (player.hp < 0) player.hp = 0;
 
-      let pourcentagePlayer = (playerHp / playerMaxHp) * 100;
+      let pourcentagePlayer = (player.hp / player.maxHp) * 100;
       document.getElementById("player-hp-bar").style.width = pourcentagePlayer + "%";
-      document.getElementById("player-hp-text").innerText = `HP: ${playerHp}`;
+      document.getElementById("player-hp-text").innerText = `HP: ${player.hp}`;
 
-      if (playerHp <= 0) {
+      if (player.hp <= 0) {
         document.getElementById("story").innerHTML +=
           `Le ${ennemiActuel.name} t'attaque et te fait ${damageMonster} dégâts !<br>💀 Tu es mort !`;
         finDePartie();
       } else {
         document.getElementById("story").innerHTML +=
-          `Le ${ennemiActuel.name} t'attaque ! Il te fait ${damageMonster} dégâts ! Il te reste ${playerHp} HP.`;
+          `Le ${ennemiActuel.name} t'attaque ! Il te fait ${damageMonster} dégâts ! Il te reste ${player.hp} HP.`;
       }
     }, 800);
   }
