@@ -12,6 +12,17 @@ function updatePlayerUI() {
   document.getElementById("player-xp-text").innerText = `XP : ${player.xp}`;
   document.getElementById("player-level-text").innerText = `Niveau : ${player.level}`;
 }
+function updateEnnemiUI() {
+  let pourcentageEnnemi = (ennemiActuel.hp / ennemiActuel.maxHp) * 100;
+  document.getElementById("enemy-hp-bar").style.width = pourcentageEnnemi + "%";
+  document.getElementById("enemy-hp-text").innerText = `HP : ${ennemiActuel.hp}`;
+  document.getElementById("enemy-name").innerText = ennemiActuel.name;
+  document.getElementById("enemy-image").src = ennemiActuel.image;
+}
+function updateStory(text) {
+  document.getElementById("story").innerHTML = text;
+  
+}
 function finDePartie() {
   document.querySelectorAll("#choices button").forEach(btn => {
     btn.disabled = true;
@@ -31,11 +42,11 @@ function startGame() {
   document.getElementById("game").style.display = "block";
   document.body.classList.remove("lock-scroll");
 
-  document.getElementById("story").innerHTML =
+  updateStory(
     "Maelor s’aventure dans les terres brumeuses du Val Ténébreux, guidé par les murmures d’un serment oublié.<br><br>" +
     "Il est le dernier descendant d’un ordre jadis puissant : <strong>L’Ordre Déchu</strong>. Trente années plus tôt, ses membres furent accusés de sorcellerie noire et exécutés sans procès. Leurs cendres dispersées, leur nom effacé des livres... sauf d’un.<br><br>" +
     "Aujourd’hui, quelque chose rôde dans les bois. Les morts se lèvent. Le sang ancien appelle.<br><br>" +
-    "Maelor n’est pas là pour sauver le royaume.<br>Il est là pour réclamer ce qui lui revient.";
+    "Maelor n’est pas là pour sauver le royaume.<br>Il est là pour réclamer ce qui lui revient.");
 
   document.getElementById("continue-button").style.display = "block";
 }
@@ -43,8 +54,7 @@ function startGame() {
 function launchGameplay() {
   document.getElementById("continue-button").style.display = "none";
   document.body.classList.add("game-started");
-  document.getElementById("story").innerHTML =
-    "Une créature surgit de l’ombre... prépare-toi à combattre !";
+  updateStory("Une créature surgit de l’ombre... prépare-toi à combattre !");
 }
 
 function fight() {
@@ -59,35 +69,26 @@ function fight() {
 
   if (ennemiActuel.hp < 0) ennemiActuel.hp = 0;
 
-  let pourcentageEnnemi = (ennemiActuel.hp / ennemiActuel.maxHp) * 100;
-  document.getElementById("enemy-hp-text").innerText = `HP : ${ennemiActuel.hp}`;
-  document.getElementById("enemy-hp-bar").style.width = pourcentageEnnemi + "%";
+  updateEnnemiUI()
 
-  document.getElementById("story").innerHTML =
-    `Tu attaques le ${ennemiActuel.name} ! Tu lui fais ${damagePlayer} dégâts ! Il lui reste ${ennemiActuel.hp} HP. <br>`;
+  updateStory(`Tu attaques le ${ennemiActuel.name} ! Tu lui fais ${damagePlayer} dégâts ! Il lui reste ${ennemiActuel.hp} HP. <br>`);
 
   if (ennemiActuel.hp <= 0) {
     ennemis.shift();
     player.xp += 5;
     if (player.xp >= 10){
       player.level = 2 ; 
-      document.getElementById("story").innerHTML += `<br>🆙 Tu montes au niveau ${player.level} !`;
+      updateStory(`<br>🆙 Tu montes au niveau ${player.level} !`);
     }
     updatePlayerUI()
 
    
     if (ennemis.length > 0) {
       ennemiActuel = ennemis[0];
-      document.getElementById("enemy-name").innerText = ennemiActuel.name;
-      document.getElementById("enemy-image").src = ennemiActuel.image;
-      document.getElementById("enemy-hp-text").innerText = `HP : ${ennemiActuel.hp}`;
-      document.getElementById("enemy-hp-bar").style.width =
-        (ennemiActuel.hp / ennemiActuel.maxHp) * 100 + "%";
-      document.getElementById("story").innerHTML +=
-        `Tu as vaincu le monstre ! Un ${ennemiActuel.name} approche...`;
+      updateEnnemiUI()
+      updateStory(`Tu as vaincu le monstre ! Un ${ennemiActuel.name} approche...`);
     } else {
-      document.getElementById("story").innerHTML +=
-        "<br><br>🎉 Tu as vaincu tous les monstres ! Victoire !";
+      updateStory("<br><br>🎉 Tu as vaincu tous les monstres ! Victoire !");
       finDePartie();
     }
 
@@ -107,12 +108,12 @@ function fight() {
     updatePlayerUI()
 
     if (player.hp <= 0) {
-      document.getElementById("story").innerHTML +=
-        `Le ${ennemiActuel.name} t'attaque et te fait ${damageMonster} dégâts !<br>💀 Tu es mort !`;
+      updateStory(
+        `Le ${ennemiActuel.name} t'attaque et te fait ${damageMonster} dégâts !<br>💀 Tu es mort !`);
       finDePartie();
     } else {
-      document.getElementById("story").innerHTML +=
-        `Le ${ennemiActuel.name} t'attaque ! Il te fait ${damageMonster} dégâts ! Il te reste ${player.hp} HP.`;
+      updateStory(
+        `Le ${ennemiActuel.name} t'attaque ! Il te fait ${damageMonster} dégâts ! Il te reste ${player.hp} HP.`);
     }
   }, 800);
 }
@@ -127,8 +128,8 @@ function heal() {
 
   updatePlayerUI()
 
-  document.getElementById("story").innerHTML =
-    `💖 Tu récupères ${heal} HP. Tu as maintenant ${player.hp} HP.`;
+  updateStory(
+    `💖 Tu récupères ${heal} HP. Tu as maintenant ${player.hp} HP.`);
 
   setTimeout(() => {
     let damageMonster = Math.floor(Math.random() * 4);
@@ -143,12 +144,10 @@ function heal() {
     updatePlayerUI()
 
     if (player.hp <= 0) {
-      document.getElementById("story").innerHTML +=
-        `Le ${ennemiActuel.name} t'attaque et te fait ${damageMonster} dégâts !<br>💀 Tu es mort !`;
+      updateStory(`Le ${ennemiActuel.name} t'attaque et te fait ${damageMonster} dégâts !<br>💀 Tu es mort !`);
       finDePartie();
     } else {
-      document.getElementById("story").innerHTML +=
-        `Le ${ennemiActuel.name} t'attaque ! Il te fait ${damageMonster} dégâts ! Il te reste ${player.hp} HP.`;
+      updateStory(`Le ${ennemiActuel.name} t'attaque ! Il te fait ${damageMonster} dégâts ! Il te reste ${player.hp} HP.`);
     }
   }, 800);
 }
@@ -158,11 +157,11 @@ function run() {
 
   let runChance = Math.random();
   if (runChance < 0.5) {
-    document.getElementById("story").innerHTML =
-      "Maelor a fui. Mais l’Ordre Déchu l’attend toujours… Souhaites-tu affronter à nouveau ton destin ?";
+    updateStory(
+      "Maelor a fui. Mais l’Ordre Déchu l’attend toujours… Souhaites-tu affronter à nouveau ton destin ?");
     finDePartie();
   } else {
-    document.getElementById("story").innerHTML = "Tu n'as pas réussi à fuir le combat !";
+    updateStory( "Tu n'as pas réussi à fuir le combat !");
 
     setTimeout(() => {
       let damageMonster = Math.floor(Math.random() * 4);
@@ -177,15 +176,14 @@ function run() {
      updatePlayerUI()
 
       if (player.hp <= 0) {
-        document.getElementById("story").innerHTML +=
-          `Le ${ennemiActuel.name} t'attaque et te fait ${damageMonster} dégâts !<br>💀 Tu es mort !`;
+        updateStory(`Le ${ennemiActuel.name} t'attaque et te fait ${damageMonster} dégâts !<br>💀 Tu es mort !`);
         finDePartie();
       } else {
-        document.getElementById("story").innerHTML +=
-          `Le ${ennemiActuel.name} t'attaque ! Il te fait ${damageMonster} dégâts ! Il te reste ${player.hp} HP.`;
+        updateStory(`Le ${ennemiActuel.name} t'attaque ! Il te fait ${damageMonster} dégâts ! Il te reste ${player.hp} HP.`);
       }
     }, 800);
   }
 }
+
 
 
