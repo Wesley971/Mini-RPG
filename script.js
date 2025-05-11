@@ -5,7 +5,13 @@ let player = {
   level: 1,}
 
 let ennemiActuel = ennemis[0];
-
+function updatePlayerUI() {
+  let pourcentagePlayer = (player.hp / player.maxHp) * 100;
+  document.getElementById("player-hp-bar").style.width = pourcentagePlayer + "%";
+  document.getElementById("player-hp-text").innerText = `HP: ${player.hp}`;
+  document.getElementById("player-xp-text").innerText = `XP : ${player.xp}`;
+  document.getElementById("player-level-text").innerText = `Niveau : ${player.level}`;
+}
 function finDePartie() {
   document.querySelectorAll("#choices button").forEach(btn => {
     btn.disabled = true;
@@ -67,8 +73,7 @@ function fight() {
       player.level = 2 ; 
       document.getElementById("story").innerHTML += `<br>🆙 Tu montes au niveau ${player.level} !`;
     }
-    document.getElementById("player-xp-text").innerText = `XP : ${player.xp}`;
-    document.getElementById("player-level-text").innerText = `Niveau : ${player.level}`;
+    updatePlayerUI()
 
    
     if (ennemis.length > 0) {
@@ -99,9 +104,7 @@ function fight() {
 
     if (player.hp < 0) player.hp = 0;
 
-    let pourcentagePlayer = (player.hp / player.maxHp) * 100;
-    document.getElementById("player-hp-bar").style.width = pourcentagePlayer + "%";
-    document.getElementById("player-hp-text").innerText = `HP: ${player.hp}`;
+    updatePlayerUI()
 
     if (player.hp <= 0) {
       document.getElementById("story").innerHTML +=
@@ -122,9 +125,7 @@ function heal() {
 
   if (player.hp > player.maxHp) player.hp = player.maxHp;
 
-  let pourcentagePlayer = (player.hp / player.maxHp) * 100;
-  document.getElementById("player-hp-bar").style.width = pourcentagePlayer + "%";
-  document.getElementById("player-hp-text").innerText = `HP: ${player.hp}`;
+  updatePlayerUI()
 
   document.getElementById("story").innerHTML =
     `💖 Tu récupères ${heal} HP. Tu as maintenant ${player.hp} HP.`;
@@ -139,9 +140,7 @@ function heal() {
 
     if (player.hp < 0) player.hp = 0;
 
-    let pourcentagePlayer = (player.hp / player.maxHp) * 100;
-    document.getElementById("player-hp-bar").style.width = pourcentagePlayer + "%";
-    document.getElementById("player-hp-text").innerText = `HP: ${player.hp}`;
+    updatePlayerUI()
 
     if (player.hp <= 0) {
       document.getElementById("story").innerHTML +=
@@ -175,9 +174,7 @@ function run() {
 
       if (player.hp < 0) player.hp = 0;
 
-      let pourcentagePlayer = (player.hp / player.maxHp) * 100;
-      document.getElementById("player-hp-bar").style.width = pourcentagePlayer + "%";
-      document.getElementById("player-hp-text").innerText = `HP: ${player.hp}`;
+     updatePlayerUI()
 
       if (player.hp <= 0) {
         document.getElementById("story").innerHTML +=
@@ -190,3 +187,5 @@ function run() {
     }, 800);
   }
 }
+
+
