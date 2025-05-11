@@ -5,37 +5,6 @@ let player = {
   level: 1,}
 
 let ennemiActuel = ennemis[0];
-function updatePlayerUI() {
-  let pourcentagePlayer = (player.hp / player.maxHp) * 100;
-  document.getElementById("player-hp-bar").style.width = pourcentagePlayer + "%";
-  document.getElementById("player-hp-text").innerText = `HP: ${player.hp}`;
-  document.getElementById("player-xp-text").innerText = `XP : ${player.xp}`;
-  document.getElementById("player-level-text").innerText = `Niveau : ${player.level}`;
-}
-function updateEnnemiUI() {
-  let pourcentageEnnemi = (ennemiActuel.hp / ennemiActuel.maxHp) * 100;
-  document.getElementById("enemy-hp-bar").style.width = pourcentageEnnemi + "%";
-  document.getElementById("enemy-hp-text").innerText = `HP : ${ennemiActuel.hp}`;
-  document.getElementById("enemy-name").innerText = ennemiActuel.name;
-  document.getElementById("enemy-image").src = ennemiActuel.image;
-}
-function updateStory(text) {
-  document.getElementById("story").innerHTML = text;
-  
-}
-function finDePartie() {
-  document.querySelectorAll("#choices button").forEach(btn => {
-    btn.disabled = true;
-  });
-
-  if (!document.querySelector(".replay-btn")) {
-    const replayButton = document.createElement("button");
-    replayButton.textContent = "🔁 Rejouer";
-    replayButton.classList.add("replay-btn");
-    replayButton.onclick = () => window.location.reload();
-    document.getElementById("choices").appendChild(replayButton);
-  }
-}
 
 function startGame() {
   document.getElementById("intro-screen").style.display = "none";
@@ -74,26 +43,29 @@ function fight() {
   updateStory(`Tu attaques le ${ennemiActuel.name} ! Tu lui fais ${damagePlayer} dégâts ! Il lui reste ${ennemiActuel.hp} HP. <br>`);
 
   if (ennemiActuel.hp <= 0) {
-    ennemis.shift();
-    player.xp += 5;
-    if (player.xp >= 10){
-      player.level = 2 ; 
-      updateStory(`<br>🆙 Tu montes au niveau ${player.level} !`);
-    }
-    updatePlayerUI()
+  ennemis.shift();
 
-   
-    if (ennemis.length > 0) {
-      ennemiActuel = ennemis[0];
-      updateEnnemiUI()
-      updateStory(`Tu as vaincu le monstre ! Un ${ennemiActuel.name} approche...`);
-    } else {
-      updateStory("<br><br>🎉 Tu as vaincu tous les monstres ! Victoire !");
-      finDePartie();
-    }
+  let texte = `Tu as vaincu le monstre ! `;
 
-    return;
+  if (gainXp(5)) {
+    texte += `<br>🆙 Tu es passé niveau ${player.level} !`;
   }
+
+  updatePlayerUI();
+
+  if (ennemis.length > 0) {
+    ennemiActuel = ennemis[0];
+    updateEnnemiUI();
+    texte += `<br>Un ${ennemiActuel.name} approche...`;
+  } else {
+    texte += "<br><br>🎉 Tu as vaincu tous les monstres ! Victoire !";
+    finDePartie();
+  }
+
+  updateStory(texte);
+  return;
+}
+
 
   setTimeout(() => {
     let damageMonster = Math.floor(Math.random() * 4);
